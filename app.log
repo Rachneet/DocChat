@@ -1,0 +1,18 @@
+2025-01-27 17:10:57 | INFO | Processing question: Retrieve the data center PUE efficiency values in Singapore 2nd facility in 2019 and 2022. Also retrieve regional average CFE in Asia pacific in 2023
+2025-01-27 17:10:57 | INFO | Uploaded files: ['/private/var/folders/xl/k2r85yz94931c8wfc7rhh1n00000gn/T/gradio/6e5c438293c0c56859ef0a133275d762f6f5aa60d5c704a6c578b9922727ee62/google-2024-environmental-report.pdf']
+2025-01-27 17:13:33 | INFO | Processed /private/var/folders/xl/k2r85yz94931c8wfc7rhh1n00000gn/T/gradio/6e5c438293c0c56859ef0a133275d762f6f5aa60d5c704a6c578b9922727ee62/google-2024-environmental-report.pdf: 329 chunks
+2025-01-27 17:13:33 | INFO | Processed 329 document chunks.
+2025-01-27 17:13:42 | INFO | Hybrid retriever built successfully.
+2025-01-27 17:13:42 | ERROR | Error processing question: 'AgentWorkflow' object has no attribute 'full_pipeline'
+2025-01-27 17:26:31 | INFO | Processing question: Retrieve the data center PUE efficiency values in Singapore 2nd facility in 2019 and 2022. Also retrieve regional average CFE in Asia pacific in 2023
+2025-01-27 17:26:31 | INFO | Uploaded files: ['/private/var/folders/xl/k2r85yz94931c8wfc7rhh1n00000gn/T/gradio/6e5c438293c0c56859ef0a133275d762f6f5aa60d5c704a6c578b9922727ee62/google-2024-environmental-report.pdf']
+2025-01-27 17:28:38 | INFO | Processed /private/var/folders/xl/k2r85yz94931c8wfc7rhh1n00000gn/T/gradio/6e5c438293c0c56859ef0a133275d762f6f5aa60d5c704a6c578b9922727ee62/google-2024-environmental-report.pdf: 329 chunks
+2025-01-27 17:28:38 | INFO | Processed 329 document chunks.
+2025-01-27 17:28:41 | INFO | Hybrid retriever built successfully.
+2025-01-27 17:29:02 | INFO | Workflow completed successfully.
+2025-01-27 17:34:13 | INFO | Processing question: What is the global average CFE in 2023?
+2025-01-27 17:34:13 | INFO | Uploaded files: ['/private/var/folders/xl/k2r85yz94931c8wfc7rhh1n00000gn/T/gradio/6e5c438293c0c56859ef0a133275d762f6f5aa60d5c704a6c578b9922727ee62/google-2024-environmental-report.pdf']
+2025-01-27 17:36:25 | INFO | Processed /private/var/folders/xl/k2r85yz94931c8wfc7rhh1n00000gn/T/gradio/6e5c438293c0c56859ef0a133275d762f6f5aa60d5c704a6c578b9922727ee62/google-2024-environmental-report.pdf: 329 chunks
+2025-01-27 17:36:25 | INFO | Processed 329 document chunks.
+2025-01-27 17:36:28 | INFO | Hybrid retriever built successfully.
+2025-01-27 17:36:36 | INFO | Workflow completed successfully.
