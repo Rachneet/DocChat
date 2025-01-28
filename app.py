@@ -56,7 +56,7 @@ def main():
         container.style.marginBottom = '20px';
         container.style.color = '#eba93f';
 
-        var text = 'Welcome to DocChat!';
+        var text = 'Welcome to DocChat 🐥!';
         for (var i = 0; i < text.length; i++) {
             (function(i){
                 setTimeout(function(){
@@ -81,12 +81,12 @@ def main():
     }
     """
 
-    with gr.Blocks(theme=gr.themes.Citrus(), css=css, js=js) as demo:
-        gr.Markdown("## DocChat: powered by Docling and LangGraph", elem_classes="subtitle" )
-        gr.Markdown("# How it works", elem_classes="title")
-        gr.Markdown("Upload your document(s), enter your query then hit Submit", elem_classes="text")
-        gr.Markdown("Or you can select one of the examples from the drop-down menu, select Load Example then hit Submit", elem_classes="text")
-        gr.Markdown("Please note! DocChat only accepts documents in these formats: '.pdf', '.docx', '.txt', '.md'", elem_classes="text")
+    with gr.Blocks(theme=gr.themes.Citrus(), title="DocChat 🐥", css=css, js=js) as demo:
+        gr.Markdown("## DocChat: powered by Docling 🐥 and LangGraph", elem_classes="subtitle")
+        gr.Markdown("# How it works ✨:", elem_classes="title")
+        gr.Markdown("📤 Upload your document(s), enter your query then hit Submit 📝", elem_classes="text")
+        gr.Markdown("Or you can select one of the examples from the drop-down menu, select Load Example then hit Submit 📝", elem_classes="text")
+        gr.Markdown("⚠️ **Note:** DocChat only accepts documents in these formats: '.pdf', '.docx', '.txt', '.md'", elem_classes="text")
 
         # 2) Maintain the session state for retrieving doc changes
         session_state = gr.State({
@@ -98,23 +98,23 @@ def main():
         with gr.Row():
             with gr.Column():
                 # Section for Examples
-                gr.Markdown("### Examples")
+                gr.Markdown("### Example 📂")
                 example_dropdown = gr.Dropdown(
-                    label="Select an Example",
+                    label="Select an Example 🐥",
                     choices=list(EXAMPLES.keys()),
                     value=None,  # initially unselected
                 )
-                load_example_btn = gr.Button("Load Example")
+                load_example_btn = gr.Button("Load Example 🛠️")
 
                 # Standard input components
-                files = gr.Files(label="Upload Documents", file_types=constants.ALLOWED_TYPES)
-                question = gr.Textbox(label="Question", lines=3)
+                files = gr.Files(label="📄 Upload Documents", file_types=constants.ALLOWED_TYPES)
+                question = gr.Textbox(label="❓ Question", lines=3)
 
-                submit_btn = gr.Button("Submit")
+                submit_btn = gr.Button("Submit 🚀")
                 
             with gr.Column():
-                answer_output = gr.Textbox(label="Answer", interactive=False)
-                verification_output = gr.Textbox(label="Verification Report")
+                answer_output = gr.Textbox(label="🐥 Answer", interactive=False)
+                verification_output = gr.Textbox(label="✅ Verification Report")
 
         # 4) Helper function to load example into the UI
         def load_example(example_key: str):
@@ -154,9 +154,9 @@ def main():
             """Handle questions with document caching."""
             try:
                 if not question_text.strip():
-                    raise ValueError("Question cannot be empty")
+                    raise ValueError("❌ Question cannot be empty")
                 if not uploaded_files:
-                    raise ValueError("No documents uploaded")
+                    raise ValueError("❌ No documents uploaded")
 
                 current_hashes = _get_file_hashes(uploaded_files)
                 
@@ -179,7 +179,7 @@ def main():
                     
             except Exception as e:
                 logger.error(f"Processing error: {str(e)}")
-                return f"Error: {str(e)}", "", state
+                return f"❌ Error: {str(e)}", "", state
 
         submit_btn.click(
             fn=process_question,
