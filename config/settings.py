@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     CHROMA_COLLECTION_NAME: str = "documents"
 
     # Retrieval settings
-    VECTOR_SEARCH_K: int = 5
+    VECTOR_SEARCH_K: int = 10
     HYBRID_RETRIEVER_WEIGHTS: list = [0.4, 0.6]
 
     # Logging settings

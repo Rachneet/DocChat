@@ -37,7 +37,6 @@ class RetrieverBuilder:
                 weights=settings.HYBRID_RETRIEVER_WEIGHTS
             )
             logger.info("Hybrid retriever created successfully.")
-            
             return hybrid_retriever
         except Exception as e:
             logger.error(f"Failed to build hybrid retriever: {e}")
