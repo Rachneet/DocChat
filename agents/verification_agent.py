@@ -5,15 +5,31 @@ from typing import Dict, List
 from langchain.schema import Document
 from config.settings import settings
 import logging
+from ibm_watsonx_ai import Credentials, APIClient
+from ibm_watsonx_ai.foundation_models import ModelInference
 
 logger = logging.getLogger(__name__)
 
+credentials = Credentials(
+                   url = "https://us-south.ml.cloud.ibm.com",
+                   # api_key = "<YOUR_API_KEY>" # Normally you'd put an API key here, but we've got you covered here
+                  )
+client = APIClient(credentials)
+project_id = "skills-network"
+
 class VerificationAgent:
     def __init__(self):
-        self.llm = ChatOpenAI(
-            model="gpt-4-turbo",
-            temperature=0,
+        model = ModelInference(
+            model_id="ibm/granite-3-8b-instruct",
+            credentials=credentials,
+            project_id=project_id,
+            params={"temperature": 0}
         )
+        # self.llm = ChatOpenAI(
+        #     model="gpt-4-turbo",
+        #     temperature=0,
+        # )
+        self.llm = model
         self.prompt = ChatPromptTemplate.from_template(
             """Verify the following answer against the provided context. Check for:
             1. Direct factual support (YES/NO)
