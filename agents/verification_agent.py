@@ -13,7 +13,6 @@ class VerificationAgent:
         self.llm = ChatOpenAI(
             model="gpt-4-turbo",
             temperature=0,
-            api_key=settings.OPENAI_API_KEY  # Pass the API key here
         )
         self.prompt = ChatPromptTemplate.from_template(
             """Verify the following answer against the provided context. Check for:

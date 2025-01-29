@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 class RetrieverBuilder:
     def __init__(self):
         """Initialize the retriever builder with embeddings."""
-        self.embeddings = OpenAIEmbeddings(api_key=settings.OPENAI_API_KEY)
+        self.embeddings = OpenAIEmbeddings()
         
     def build_hybrid_retriever(self, docs):
         """Build a hybrid retriever using BM25 and vector-based retrieval."""

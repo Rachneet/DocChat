@@ -5,7 +5,7 @@ from config.settings import settings
 
 class RelevanceChecker:
     def __init__(self):
-        self.llm = ChatOpenAI(api_key=settings.OPENAI_API_KEY, model="gpt-4o")
+        self.llm = ChatOpenAI(model="gpt-4o")
 
         self.prompt = ChatPromptTemplate.from_template(
             """
@@ -47,26 +47,15 @@ class RelevanceChecker:
         if not top_docs:
             print("[DEBUG] No documents returned from retriever.invoke(). Classifying as NO_MATCH.")
             return "NO_MATCH"
-
-        # Print how many docs were retrieved in total
-        print(f"[DEBUG] Retriever returned {len(top_docs)} docs. Now taking top {k} to feed LLM.")
-
-        # Show a quick snippet of each chunk for debugging
-        for i, doc in enumerate(top_docs[:k]):
-            snippet = doc.page_content[:200].replace("\n", "\\n")
-            print(f"[DEBUG] Chunk #{i+1} preview (first 200 chars): {snippet}...")
-
+        
         # Combine the top k chunk texts into one string
         document_content = "\n\n".join(doc.page_content for doc in top_docs[:k])
-        print(f"[DEBUG] Combined text length for top {k} chunks: {len(document_content)} chars.")
 
         # Call the LLM
         response = self.chain.invoke({
             "question": question, 
             "document_content": document_content
         }).strip()
-        
-        print(f"[DEBUG] LLM raw classification response: '{response}'")
 
         # Convert to uppercase, check if it's one of our valid labels
         classification = response.upper()

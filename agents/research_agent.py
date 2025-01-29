@@ -14,7 +14,6 @@ class ResearchAgent:
         self.llm = ChatOpenAI(
             model="gpt-4-turbo",
             temperature=0.3,
-            api_key=settings.OPENAI_API_KEY  # Pass the API key here
         )
         self.prompt = ChatPromptTemplate.from_template(
             """Answer the following question based on the provided context. Be precise and factual.
