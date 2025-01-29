@@ -1,3 +1,5 @@
+from ibm_watsonx_ai.metanames import GenTextParamsMetaNames as GenParams
+from langchain_ibm import WatsonxLLM
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -5,31 +7,22 @@ from typing import Dict, List
 from langchain.schema import Document
 from config.settings import settings
 import logging
-from ibm_watsonx_ai import Credentials, APIClient
-from ibm_watsonx_ai.foundation_models import ModelInference
+
 
 logger = logging.getLogger(__name__)
 
-credentials = Credentials(
-                   url = "https://us-south.ml.cloud.ibm.com",
-                   # api_key = "<YOUR_API_KEY>" # Normally you'd put an API key here, but we've got you covered here
-                  )
-client = APIClient(credentials)
-project_id = "skills-network"
-
 class VerificationAgent:
     def __init__(self):
-        model = ModelInference(
+        """Initialize the verification agent with the WatsonX model."""
+        parameters = {
+            GenParams.TEMPERATURE: 0.0
+        }
+        self.llm = WatsonxLLM(
             model_id="ibm/granite-3-8b-instruct",
-            credentials=credentials,
-            project_id=project_id,
-            params={"temperature": 0}
+            url="https://us-south.ml.cloud.ibm.com",
+            project_id="skills-network",
+            params=parameters
         )
-        # self.llm = ChatOpenAI(
-        #     model="gpt-4-turbo",
-        #     temperature=0,
-        # )
-        self.llm = model
         self.prompt = ChatPromptTemplate.from_template(
             """Verify the following answer against the provided context. Check for:
             1. Direct factual support (YES/NO)

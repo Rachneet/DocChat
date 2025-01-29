@@ -1,27 +1,16 @@
 from langchain_openai import ChatOpenAI
 from langchain.prompts import ChatPromptTemplate
+from langchain_ibm import WatsonxLLM 
 from langchain.schema.output_parser import StrOutputParser
 from config.settings import settings
-from ibm_watsonx_ai import Credentials, APIClient
-from ibm_watsonx_ai.foundation_models import ModelInference
-
-credentials = Credentials(
-                   url = "https://us-south.ml.cloud.ibm.com",
-                   # api_key = "<YOUR_API_KEY>" # Normally you'd put an API key here, but we've got you covered here
-                  )
-client = APIClient(credentials)
-project_id = "skills-network"
 
 class RelevanceChecker:
     def __init__(self):
-        # Initialize the WatsonX model
-        model = ModelInference(
+        self.llm = WatsonxLLM(
             model_id="ibm/granite-3-8b-instruct",
-            credentials=credentials,
-            project_id=project_id,
+            url="https://us-south.ml.cloud.ibm.com",
+            project_id="skills-network"
         )
-        # self.llm = ChatOpenAI(model="gpt-4o")
-        self.llm = model
 
         self.prompt = ChatPromptTemplate.from_template(
             """
