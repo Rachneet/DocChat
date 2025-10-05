@@ -1,0 +1,19 @@
+[project]
+name = "docchat"
+version = "0.1.0"
+description = "Chat and retrieve answers from long documents."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "chromadb>=1.1.1",
+    "docling>=2.55.1",
+    "gradio>=5.49.0",
+    "langchain>=0.3.27",
+    "langchain-community>=0.3.30",
+    "langchain-huggingface>=0.3.1",
+    "langchain-openai>=0.3.34",
+    "langgraph>=0.6.8",
+    "loguru>=0.7.3",
+    "pypdf>=6.1.1",
+    "rank-bm25>=0.2.2",
+]

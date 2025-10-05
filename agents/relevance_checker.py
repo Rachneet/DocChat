@@ -1,24 +1,28 @@
-from ibm_watsonx_ai.foundation_models import ModelInference
-from ibm_watsonx_ai import Credentials, APIClient
+"""
+The RelevanceChecker is responsible for determining whether retrieved documents contain relevant information to answer a given question. 
+It uses an ensemble retriever to fetch document chunks and then leverages LLM for classification. The goal is to categorize relevance into three possible labels:
+
+* "CAN_ANSWER" - The documents provide sufficient information for a full answer.
+* "PARTIAL" - The documents mention the topic but lack complete details.
+* "NO_MATCH" - The documents do not discuss the question at all.
+
+This classification helps filter out irrelevant queries, ensuring that further processing is only performed on useful data.
+"""
+from langchain_openai import ChatOpenAI
 from config.settings import settings
 import re
 import logging
 
 logger = logging.getLogger(__name__)
 
-credentials = Credentials(
-                   url = "https://us-south.ml.cloud.ibm.com",
-                  )
-client = APIClient(credentials)
 
 class RelevanceChecker:
     def __init__(self):
         # Initialize the WatsonX ModelInference
-        self.model = ModelInference(
-            model_id="ibm/granite-3-8b-instruct",
-            credentials=credentials,
-            project_id="skills-network",
-            params={"temperature": 0, "max_tokens": 10},
+        self.model = ChatOpenAI(
+            model="llama-3.3-70b-versatile",
+            base_url=settings.GROQ_BASE_URL,
+            api_key=settings.GROQ_API_KEY,
         )
 
     def check(self, question: str, retriever, k=3) -> str:
@@ -65,21 +69,14 @@ class RelevanceChecker:
 
         # Call the LLM
         try:
-            response = self.model.chat(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt  # Changed from list to string
-                    }
-                ]
-            )
+            response = self.model.invoke(prompt)
         except Exception as e:
             logger.error(f"Error during model inference: {e}")
             return "NO_MATCH"
 
         # Extract the content from the response
         try:
-            llm_response = response['choices'][0]['message']['content'].strip().upper()
+            llm_response = response.content.strip().upper()
             logger.debug(f"LLM response: {llm_response}")
         except (IndexError, KeyError) as e:
             logger.error(f"Unexpected response structure: {e}")
@@ -97,3 +94,17 @@ class RelevanceChecker:
             classification = llm_response
 
         return classification
+
+
+if __name__ == "__main__":
+    # Example usage
+    checker = RelevanceChecker()
+    # Mock retriever with an invoke method for demonstration purposes
+    class MockRetriever:
+        def invoke(self, question):
+            return [
+                type('Doc', (object,), {'page_content': 'The capital of France is Paris.'})()
+            ]
+    retriever = MockRetriever()
+    result = checker.check("What is the capital of France?", retriever)
+    print(f"Relevance classification: {result}")

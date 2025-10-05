@@ -6,3 +6,6 @@ MAX_TOTAL_SIZE: int = 200 * 1024 * 1024
 
 # Allowed file types for upload
 ALLOWED_TYPES: list = [".txt", ".pdf", ".docx", ".md"]
+
+# MODEL URLS
+GROQ_BASE_URL = "https://api.groq.com/openai/v1"

@@ -5,3 +5,8 @@ chroma_db/
 venv/
 app.log
 .DS_Store
+
+uv.lock
+.idea/
+.venv/
+.gradio/

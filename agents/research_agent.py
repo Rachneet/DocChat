@@ -1,33 +1,27 @@
-from ibm_watsonx_ai.foundation_models import ModelInference
-from ibm_watsonx_ai import Credentials, APIClient
+from langchain_openai import ChatOpenAI
 from typing import Dict, List
 from langchain.schema import Document
 from config.settings import settings
 import json
 
-credentials = Credentials(
-                   url = "https://us-south.ml.cloud.ibm.com",
-                  )
-client = APIClient(credentials)
-
 
 class ResearchAgent:
     def __init__(self):
         """
-        Initialize the research agent with the IBM WatsonX ModelInference.
+        Initialize the research agent with the LLM.
         """
-        # Initialize the WatsonX ModelInference
-        print("Initializing ResearchAgent with IBM WatsonX ModelInference...")
-        self.model = ModelInference(
-            model_id="meta-llama/llama-3-2-90b-vision-instruct", 
-            credentials=credentials,
-            project_id="skills-network",
-            params={
-                "max_tokens": 300,            # Adjust based on desired response length
-                "temperature": 0.3,           # Controls randomness; lower values make output more deterministic
-            }
+        # Initialize the LLM
+        print("Initializing ResearchAgent with Model...")
+
+        self.model = ChatOpenAI(
+            model="llama-3.3-70b-versatile",
+            base_url=settings.GROQ_BASE_URL,
+            api_key=settings.GROQ_API_KEY,
+            max_completion_tokens=300,
+            temperature=0.3,
         )
-        print("ModelInference initialized successfully.")
+
+        print("Model initialized successfully.")
 
     def sanitize_response(self, response_text: str) -> str:
         """
@@ -72,14 +66,7 @@ class ResearchAgent:
         # Call the LLM to generate the answer
         try:
             print("Sending prompt to the model...")
-            response = self.model.chat(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt  # Ensure content is a string
-                    }
-                ]
-            )
+            response = self.model.invoke(prompt)
             print("LLM response received.")
         except Exception as e:
             print(f"Error during model inference: {e}")
@@ -87,7 +74,7 @@ class ResearchAgent:
 
         # Extract and process the LLM's response
         try:
-            llm_response = response['choices'][0]['message']['content'].strip()
+            llm_response = response.content.strip()
             print(f"Raw LLM response:\n{llm_response}")
         except (IndexError, KeyError) as e:
             print(f"Unexpected response structure: {e}")

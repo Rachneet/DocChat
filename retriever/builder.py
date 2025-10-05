@@ -1,7 +1,6 @@
 from langchain_community.vectorstores import Chroma
 from langchain_openai import OpenAIEmbeddings
-from ibm_watsonx_ai.metanames import EmbedTextParamsMetaNames
-from langchain_ibm import WatsonxEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings, HuggingFaceEndpointEmbeddings
 from langchain_community.retrievers import BM25Retriever
 from langchain.retrievers import EnsembleRetriever
 from config.settings import settings
@@ -12,19 +11,16 @@ logger = logging.getLogger(__name__)
 class RetrieverBuilder:
     def __init__(self):
         """Initialize the retriever builder with embeddings."""
-        embed_params = {
-            EmbedTextParamsMetaNames.TRUNCATE_INPUT_TOKENS: 3,
-            EmbedTextParamsMetaNames.RETURN_OPTIONS: {"input_text": True},
-        }
 
-        watsonx_embedding = WatsonxEmbeddings(
-            model_id="ibm/slate-125m-english-rtrvr",
-            url="https://us-south.ml.cloud.ibm.com",
-            project_id="skills-network",
-            params=embed_params
+        logger.info("Initializing embeddings...")
+        hf_embeddings = HuggingFaceEndpointEmbeddings(
+            model= "sentence-transformers/all-MiniLM-L6-v2",
+            task="feature-extraction",
+            huggingfacehub_api_token=settings.HUGGINGFACE_API_KEY
         )
-        self.embeddings = watsonx_embedding
-        
+        self.embeddings = hf_embeddings
+        logger.info("Embeddings initialized successfully.")
+
     def build_hybrid_retriever(self, docs):
         """Build a hybrid retriever using BM25 and vector-based retrieval."""
         try:

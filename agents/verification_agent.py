@@ -1,30 +1,25 @@
 import json  # Import for JSON serialization
-from ibm_watsonx_ai.foundation_models import ModelInference
-from ibm_watsonx_ai import Credentials, APIClient
+from langchain_openai import ChatOpenAI
 from typing import Dict, List
 from langchain.schema import Document
+from config.settings import settings
 
-credentials = Credentials(
-                   url = "https://us-south.ml.cloud.ibm.com",
-                  )
-client = APIClient(credentials)
 
 class VerificationAgent:
     def __init__(self):
         """
-        Initialize the verification agent with the IBM WatsonX ModelInference.
+        Initialize the verification agent with the LLM.
         """
-        # Initialize the WatsonX ModelInference
-        print("Initializing VerificationAgent with IBM WatsonX ModelInference...")
-        self.model = ModelInference(
-            model_id="ibm/granite-3-8b-instruct", 
-            credentials=credentials,
-            project_id="skills-network",
-            params={
-                "max_tokens": 200,            # Adjust based on desired response length
-                "temperature": 0.0,           # Remove randomness for consistency
-            }
+        # Initialize the LLM
+        print("Initializing VerificationAgent with LLM...")
+        self.model = ChatOpenAI(
+            model="llama-3.1-8b-instant",
+            base_url=settings.GROQ_BASE_URL,
+            api_key=settings.GROQ_API_KEY,
+            temperature=0.0,
+            max_completion_tokens=200,
         )
+           
         print("ModelInference initialized successfully.")
 
     def sanitize_response(self, response_text: str) -> str:
@@ -153,14 +148,7 @@ class VerificationAgent:
         # Call the LLM to generate the verification report
         try:
             print("Sending prompt to the model...")
-            response = self.model.chat(
-                messages=[
-                    {
-                        "role": "user",
-                        "content": prompt  # Ensure content is a string
-                    }
-                ]
-            )
+            response = self.model.invoke(prompt)
             print("LLM response received.")
         except Exception as e:
             print(f"Error during model inference: {e}")
@@ -168,7 +156,7 @@ class VerificationAgent:
 
         # Extract and process the LLM's response
         try:
-            llm_response = response['choices'][0]['message']['content'].strip()
+            llm_response = response.content.strip()
             print(f"Raw LLM response:\n{llm_response}")
         except (IndexError, KeyError) as e:
             print(f"Unexpected response structure: {e}")

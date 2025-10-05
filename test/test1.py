@@ -72,18 +72,26 @@ def parse_with_langchain(pdf_path):
 def main():
     ocr_path = "test/ocr_test.pdf"
     scanned_pdf_path = "test/sample.png"
+    attention_paper_path = "test/attention.pdf"
     
-    print("\n🔍 Running Docling Extraction for OCR...")
-    docling_docs = parse_with_docling(ocr_path)
+    # print("\n🔍 Running Docling Extraction for OCR...")
+    # docling_docs = parse_with_docling(ocr_path)
 
-    print("\n🔍 Running LangChain Extraction for OCR...")
-    langchain_text = parse_with_langchain(ocr_path)
+    # print("\n🔍 Running LangChain Extraction for OCR...")
+    # langchain_text = parse_with_langchain(ocr_path)
 
-    print("\n🔍 Running Docling Extraction for scanned PDF...")
-    docling_docs = parse_with_docling(scanned_pdf_path)
+    # print("\n🔍 Running Docling Extraction for scanned PDF...")
+    # docling_docs = parse_with_docling(scanned_pdf_path)
 
-    print("\n🔍 Running LangChain Extraction for scanned PDF...")
-    langchain_text = parse_with_langchain(scanned_pdf_path)
+    # print("\n🔍 Running LangChain Extraction for scanned PDF...")
+    # langchain_text = parse_with_langchain(scanned_pdf_path)
+
+    # print("\n🔍 Running Docling Extraction for attention paper...")
+    # docling_docs = parse_with_docling(attention_paper_path)
+
+    print("\n🔍 Running LangChain Extraction for attention paper...")
+    langchain_text = parse_with_langchain(attention_paper_path)
+
 
 if __name__ == "__main__":
     main()

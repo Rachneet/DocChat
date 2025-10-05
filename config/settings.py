@@ -1,15 +1,18 @@
 from pydantic_settings import BaseSettings
-from .constants import MAX_FILE_SIZE, MAX_TOTAL_SIZE, ALLOWED_TYPES
+from .constants import MAX_FILE_SIZE, MAX_TOTAL_SIZE, ALLOWED_TYPES, GROQ_BASE_URL
 import os
 
 class Settings(BaseSettings):
     # Required settings
     OPENAI_API_KEY: str
+    GROQ_API_KEY: str
+    HUGGINGFACE_API_KEY: str
 
     # Optional settings with defaults
     MAX_FILE_SIZE: int = MAX_FILE_SIZE
     MAX_TOTAL_SIZE: int = MAX_TOTAL_SIZE
     ALLOWED_TYPES: list = ALLOWED_TYPES
+    GROQ_BASE_URL: str = GROQ_BASE_URL
 
     # Database settings
     CHROMA_DB_PATH: str = "./chroma_db"
@@ -29,5 +32,6 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
+        extra = "allow"
 
 settings = Settings()
